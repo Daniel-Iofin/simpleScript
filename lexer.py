@@ -6,8 +6,11 @@ class TokenType:
     IF = "IF"
     ELSE = "ELSE"
     WHILE = "WHILE"
+    FOR = "FOR"
     DEF = "DEF"
     RETURN = "RETURN"
+    BREAK = "BREAK"
+    CONTINUE = "CONTINUE"
     TRUE = "TRUE"
     FALSE = "FALSE"
 
@@ -22,6 +25,8 @@ class TokenType:
     MULTIPLY = "MULTIPLY"
     DIVIDE = "DIVIDE"
     MODULO = "MODULO"
+    PLUS_PLUS = "PLUS_PLUS"
+    MINUS_MINUS = "MINUS_MINUS"
     EQUAL = "EQUAL"
     NOT_EQUAL = "NOT_EQUAL"
     LESS = "LESS"
@@ -29,6 +34,11 @@ class TokenType:
     LESS_EQUAL = "LESS_EQUAL"
     GREATER_EQUAL = "GREATER_EQUAL"
     ASSIGN = "ASSIGN"
+    PLUS_ASSIGN = "PLUS_ASSIGN"
+    MINUS_ASSIGN = "MINUS_ASSIGN"
+    MULTIPLY_ASSIGN = "MULTIPLY_ASSIGN"
+    DIVIDE_ASSIGN = "DIVIDE_ASSIGN"
+    MODULO_ASSIGN = "MODULO_ASSIGN"
     AND = "AND"
     OR = "OR"
     NOT = "NOT"
@@ -38,6 +48,8 @@ class TokenType:
     RPAREN = "RPAREN"
     LBRACE = "LBRACE"
     RBRACE = "RBRACE"
+    LBRACKET = "LBRACKET"
+    RBRACKET = "RBRACKET"
     SEMICOLON = "SEMICOLON"
     COMMA = "COMMA"
 
@@ -154,8 +166,11 @@ class Lexer:
             'if': TokenType.IF,
             'else': TokenType.ELSE,
             'while': TokenType.WHILE,
+            'for': TokenType.FOR,
             'def': TokenType.DEF,
             'return': TokenType.RETURN,
+            'break': TokenType.BREAK,
+            'continue': TokenType.CONTINUE,
             'true': TokenType.TRUE,
             'false': TokenType.FALSE,
         }
@@ -202,6 +217,16 @@ class Lexer:
                 self.advance()
                 return Token(TokenType.GREATER_EQUAL, '>=', self.line, self.column - 1)
 
+            if self.current_char == '+' and self.peek() == '+':
+                self.advance()
+                self.advance()
+                return Token(TokenType.PLUS_PLUS, '++', self.line, self.column - 1)
+
+            if self.current_char == '-' and self.peek() == '-':
+                self.advance()
+                self.advance()
+                return Token(TokenType.MINUS_MINUS, '--', self.line, self.column - 1)
+
             if self.current_char == '&' and self.peek() == '&':
                 self.advance()
                 self.advance()
@@ -211,6 +236,32 @@ class Lexer:
                 self.advance()
                 self.advance()
                 return Token(TokenType.OR, '||', self.line, self.column - 1)
+
+            # Compound assignment operators
+            if self.current_char == '+' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                return Token(TokenType.PLUS_ASSIGN, '+=', self.line, self.column - 1)
+
+            if self.current_char == '-' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                return Token(TokenType.MINUS_ASSIGN, '-=', self.line, self.column - 1)
+
+            if self.current_char == '*' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                return Token(TokenType.MULTIPLY_ASSIGN, '*=', self.line, self.column - 1)
+
+            if self.current_char == '/' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                return Token(TokenType.DIVIDE_ASSIGN, '/=', self.line, self.column - 1)
+
+            if self.current_char == '%' and self.peek() == '=':
+                self.advance()
+                self.advance()
+                return Token(TokenType.MODULO_ASSIGN, '%=', self.line, self.column - 1)
 
             # Single-character operators and delimiters
             char_to_token = {
@@ -226,6 +277,8 @@ class Lexer:
                 ')': TokenType.RPAREN,
                 '{': TokenType.LBRACE,
                 '}': TokenType.RBRACE,
+                '[': TokenType.LBRACKET,
+                ']': TokenType.RBRACKET,
                 ';': TokenType.SEMICOLON,
                 ',': TokenType.COMMA,
             }

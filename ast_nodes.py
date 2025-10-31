@@ -58,6 +58,31 @@ class WhileStatement(Statement):
     def accept(self, visitor):
         return visitor.visit_while_statement(self)
 
+class ForStatement(Statement):
+    def __init__(self, initializer, condition, increment, body, line=None, column=None):
+        super().__init__(line, column)
+        self.initializer = initializer
+        self.condition = condition
+        self.increment = increment
+        self.body = body
+
+    def accept(self, visitor):
+        return visitor.visit_for_statement(self)
+
+class BreakStatement(Statement):
+    def __init__(self, line=None, column=None):
+        super().__init__(line, column)
+
+    def accept(self, visitor):
+        return visitor.visit_break_statement(self)
+
+class ContinueStatement(Statement):
+    def __init__(self, line=None, column=None):
+        super().__init__(line, column)
+
+    def accept(self, visitor):
+        return visitor.visit_continue_statement(self)
+
 class FunctionDefinition(Statement):
     def __init__(self, name, parameters, body, line=None, column=None):
         super().__init__(line, column)
@@ -147,3 +172,62 @@ class NumberLiteral(Literal):
 class StringLiteral(Literal):
     def __init__(self, value, line=None, column=None):
         super().__init__(value, line, column)
+
+class ArrayLiteral(Expression):
+    def __init__(self, elements, line=None, column=None):
+        super().__init__(line, column)
+        self.elements = elements
+
+    def accept(self, visitor):
+        return visitor.visit_array_literal(self)
+
+class ArrayAccess(Expression):
+    def __init__(self, array, index, line=None, column=None):
+        super().__init__(line, column)
+        self.array = array
+        self.index = index
+
+    def accept(self, visitor):
+        return visitor.visit_array_access(self)
+
+class ArrayAssignment(Statement):
+    def __init__(self, array, index, value, line=None, column=None):
+        super().__init__(line, column)
+        self.array = array
+        self.index = index
+        self.value = value
+
+    def accept(self, visitor):
+        return visitor.visit_array_assignment(self)
+
+class PrefixIncrement(Expression):
+    def __init__(self, operand, line=None, column=None):
+        super().__init__(line, column)
+        self.operand = operand
+
+    def accept(self, visitor):
+        return visitor.visit_prefix_increment(self)
+
+class PrefixDecrement(Expression):
+    def __init__(self, operand, line=None, column=None):
+        super().__init__(line, column)
+        self.operand = operand
+
+    def accept(self, visitor):
+        return visitor.visit_prefix_decrement(self)
+
+class PostfixIncrement(Expression):
+    def __init__(self, operand, line=None, column=None):
+        super().__init__(line, column)
+        self.operand = operand
+
+    def accept(self, visitor):
+        return visitor.visit_postfix_increment(self)
+
+class PostfixDecrement(Expression):
+    def __init__(self, operand, line=None, column=None):
+        super().__init__(line, column)
+        self.operand = operand
+
+    def accept(self, visitor):
+        return visitor.visit_postfix_decrement(self)
