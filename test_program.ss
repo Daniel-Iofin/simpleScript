@@ -1,0 +1,1 @@
+let msg = "Hello"; let n = 42; print(msg + " " + str(n));

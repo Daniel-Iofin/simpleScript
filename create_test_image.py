@@ -2,6 +2,31 @@
 
 from PIL import Image
 import math
+import sys
+import os
+
+# Add the current directory to the path so we can import from lexer
+sys.path.insert(0, os.path.dirname(__file__))
+from lexer import TokenType
+
+def encode_string(s):
+    """Encode a string into a sequence of RGB values"""
+    colors = []
+    for char in s:
+        ascii_val = ord(char)
+        # Use R channel for ASCII value, G and B for future extensions
+        colors.append((ascii_val, 0, 0))
+    # Add null terminator
+    colors.append((0, 0, 0))
+    return colors
+
+def encode_number(num_str):
+    """Encode a number string into RGB values"""
+    return encode_string(num_str)
+
+def encode_identifier(ident):
+    """Encode an identifier into RGB values"""
+    return encode_string(ident)
 
 def create_color_mapping():
     """Create the same color mapping as ImageLexer"""
@@ -9,54 +34,59 @@ def create_color_mapping():
 
     # Keywords
     keywords = [
-        ('let', 'LET'),
-        ('if', 'IF'),
-        ('else', 'ELSE'),
-        ('while', 'WHILE'),
-        ('for', 'FOR'),
-        ('def', 'DEF'),
-        ('return', 'RETURN'),
-        ('break', 'BREAK'),
-        ('continue', 'CONTINUE'),
-        ('true', 'TRUE'),
-        ('false', 'FALSE'),
+        ('let', TokenType.LET),
+        ('if', TokenType.IF),
+        ('else', TokenType.ELSE),
+        ('while', TokenType.WHILE),
+        ('for', TokenType.FOR),
+        ('def', TokenType.DEF),
+        ('return', TokenType.RETURN),
+        ('break', TokenType.BREAK),
+        ('continue', TokenType.CONTINUE),
+        ('true', TokenType.TRUE),
+        ('false', TokenType.FALSE),
     ]
 
     # Single character tokens
     single_chars = [
-        ('+', 'PLUS'),
-        ('-', 'MINUS'),
-        ('*', 'MULTIPLY'),
-        ('/', 'DIVIDE'),
-        ('%', 'MODULO'),
-        ('=', 'ASSIGN'),
-        ('<', 'LESS'),
-        ('>', 'GREATER'),
-        ('(', 'LPAREN'),
-        (')', 'RPAREN'),
-        ('{', 'LBRACE'),
-        ('}', 'RBRACE'),
-        ('[', 'LBRACKET'),
-        (']', 'RBRACKET'),
-        (';', 'SEMICOLON'),
-        (',', 'COMMA'),
+        ('+', TokenType.PLUS),
+        ('-', TokenType.MINUS),
+        ('*', TokenType.MULTIPLY),
+        ('/', TokenType.DIVIDE),
+        ('%', TokenType.MODULO),
+        ('=', TokenType.ASSIGN),
+        ('<', TokenType.LESS),
+        ('>', TokenType.GREATER),
+        ('(', TokenType.LPAREN),
+        (')', TokenType.RPAREN),
+        ('{', TokenType.LBRACE),
+        ('}', TokenType.RBRACE),
+        ('[', TokenType.LBRACKET),
+        (']', TokenType.RBRACKET),
+        (';', TokenType.SEMICOLON),
+        (',', TokenType.COMMA),
     ]
 
     # Two character operators
     two_chars = [
-        ('==', 'EQUAL'),
-        ('!=', 'NOT_EQUAL'),
-        ('<=', 'LESS_EQUAL'),
-        ('>=', 'GREATER_EQUAL'),
-        ('++', 'PLUS_PLUS'),
-        ('--', 'MINUS_MINUS'),
-        ('&&', 'AND'),
-        ('||', 'OR'),
-        ('+=', 'PLUS_ASSIGN'),
-        ('-=', 'MINUS_ASSIGN'),
-        ('*=', 'MULTIPLY_ASSIGN'),
-        ('/=', 'DIVIDE_ASSIGN'),
-        ('%=', 'MODULO_ASSIGN'),
+        ('==', TokenType.EQUAL),
+        ('!=', TokenType.NOT_EQUAL),
+        ('<=', TokenType.LESS_EQUAL),
+        ('>=', TokenType.GREATER_EQUAL),
+        ('++', TokenType.PLUS_PLUS),
+        ('--', TokenType.MINUS_MINUS),
+        ('&&', TokenType.AND),
+        ('||', TokenType.OR),
+        ('+=', TokenType.PLUS_ASSIGN),
+        ('-=', TokenType.MINUS_ASSIGN),
+        ('*=', TokenType.MULTIPLY_ASSIGN),
+        ('/=', TokenType.DIVIDE_ASSIGN),
+        ('%=', TokenType.MODULO_ASSIGN),
+    ]
+
+    # Single character operators
+    single_operators = [
+        ('!', TokenType.NOT),
     ]
 
     # Generate colors systematically - same as ImageLexer
@@ -67,7 +97,7 @@ def create_color_mapping():
         r = (color_index // (256 * 256)) % 256
         g = (color_index // 256) % 256
         b = (color_index % 128) * 2  # Ensure even blue and distinct
-        token_to_color[keyword] = (r, g, b)
+        token_to_color[(token_type, keyword)] = (r, g, b)
         color_index += 1
 
     # Single characters
@@ -75,7 +105,7 @@ def create_color_mapping():
         r = (color_index // (256 * 256)) % 256
         g = (color_index // 256) % 256
         b = (color_index % 128) * 2  # Ensure even blue and distinct
-        token_to_color[char] = (r, g, b)
+        token_to_color[(token_type, char)] = (r, g, b)
         color_index += 1
 
     # Two character operators
@@ -83,26 +113,48 @@ def create_color_mapping():
         r = (color_index // (256 * 256)) % 256
         g = (color_index // 256) % 256
         b = (color_index % 128) * 2  # Ensure even blue and distinct
-        token_to_color[op] = (r, g, b)
+        token_to_color[(token_type, op)] = (r, g, b)
         color_index += 1
 
-    # Add string and identifier colors (we'll need these)
+    # Single character operators
+    for op, token_type in single_operators:
+        r = (color_index // (256 * 256)) % 256
+        g = (color_index // 256) % 256
+        b = (color_index % 128) * 2  # Ensure even blue and distinct
+        token_to_color[(token_type, op)] = (r, g, b)
+        color_index += 1
+
+    # Literal token types (base colors for encoding values)
     r = (color_index // (256 * 256)) % 256
     g = (color_index // 256) % 256
     b = (color_index % 128) * 2
-    token_to_color['IDENTIFIER'] = (r, g, b)
+    token_to_color[(TokenType.STRING, 'STRING_BASE')] = (r, g, b)
     color_index += 1
 
     r = (color_index // (256 * 256)) % 256
     g = (color_index // 256) % 256
     b = (color_index % 128) * 2
-    token_to_color['STRING'] = (r, g, b)
+    token_to_color[(TokenType.IDENTIFIER, 'IDENTIFIER_BASE')] = (r, g, b)
     color_index += 1
 
     r = (color_index // (256 * 256)) % 256
     g = (color_index // 256) % 256
     b = (color_index % 128) * 2
-    token_to_color['NUMBER'] = (r, g, b)
+    token_to_color[(TokenType.NUMBER, 'NUMBER_BASE')] = (r, g, b)
+    color_index += 1
+
+    # Special tokens - EOF
+    r = (color_index // (256 * 256)) % 256
+    g = (color_index // 256) % 256
+    b = (color_index % 128) * 2
+    token_to_color[(TokenType.EOF, '')] = (r, g, b)
+    color_index += 1
+
+    # Comments
+    r = (color_index // (256 * 256)) % 256
+    g = (color_index // 256) % 256
+    b = (color_index % 128) * 2
+    token_to_color[(TokenType.COMMENT, 'COMMENT_BASE')] = (r, g, b)
 
     return token_to_color
 
@@ -120,7 +172,7 @@ def encode_string_as_colors(s):
 
 def create_test_image():
     """Create a test image with embedded SimpleScript code"""
-    width, height = 100, 100
+    width, height = 1200, 400  # Wider image to fit all tokens
 
     # Create a white image
     img = Image.new('RGB', (width, height), color='white')
@@ -129,46 +181,93 @@ def create_test_image():
     # Get color mapping
     token_to_color = create_color_mapping()
 
-    # SimpleScript program tokens: print(42);
+    # Test program: let msg = "Hello"; let n = 42; print(msg + " " + str(n));
     tokens = [
-        ('IDENTIFIER', 'print'), ('LPAREN', '('), ('NUMBER', '42'), ('RPAREN', ')'), ('SEMICOLON', ';')
+        (TokenType.LET, 'let'),
+        (TokenType.IDENTIFIER, 'msg'),
+        (TokenType.ASSIGN, '='),
+        (TokenType.STRING, 'Hello'),
+        (TokenType.SEMICOLON, ';'),
+        (TokenType.LET, 'let'),
+        (TokenType.IDENTIFIER, 'n'),
+        (TokenType.ASSIGN, '='),
+        (TokenType.NUMBER, '42'),
+        (TokenType.SEMICOLON, ';'),
+        (TokenType.IDENTIFIER, 'print'),
+        (TokenType.LPAREN, '('),
+        (TokenType.IDENTIFIER, 'msg'),
+        (TokenType.PLUS, '+'),
+        (TokenType.STRING, ' '),
+        (TokenType.PLUS, '+'),
+        (TokenType.IDENTIFIER, 'str'),
+        (TokenType.LPAREN, '('),
+        (TokenType.IDENTIFIER, 'n'),
+        (TokenType.RPAREN, ')'),
+        (TokenType.RPAREN, ')'),
+        (TokenType.SEMICOLON, ';'),
     ]
 
-    # Create a simple curve (diagonal line) - consecutive pixels
-    curve_points = []
-    for i in range(min(width, height) - 20):
-        x, y = 10 + i, 10 + i
-        if x < width and y < height:
-            curve_points.append((x, y))
+    # Create a simple horizontal backbone
+    backbone_y = 50
+    backbone_start_x = 20
+    backbone_spacing = 40  # Space between backbone pixels
 
-    # Set ONLY curve pixels to have odd red LSB (make them slightly different from white)
-    for x, y in curve_points:
-        # Make sure red channel has odd LSB
-        r, g, b = pixels[x, y]
-        pixels[x, y] = (r, g, b | 1)  # Ensure blue has odd LSB
+    backbone_points = []
+    for i in range(len(tokens)):
+        bx = backbone_start_x + i * backbone_spacing
+        if bx >= width - 20:
+            break
+        backbone_points.append((bx, backbone_y))
 
-    # Place tokens adjacent to curve points
-    for i, (x, y) in enumerate(curve_points):
-        if i < len(tokens):
-            token_type, token_value = tokens[i]
 
-            # Place token directly adjacent to curve pixel
-            adj_x, adj_y = x + 1, y  # Directly to the right of curve pixel
-            if adj_x < width and adj_y < height:
-                if token_type == 'IDENTIFIER':
-                    # For identifiers, use a specific identifier color
-                    # Use the IDENTIFIER color from the mapping
-                    color = (0, 0, 80)  # Hardcoded for demo
-                    pixels[adj_x, adj_y] = (color[0], color[1], color[2] | 1)
-                elif token_type == 'NUMBER':
-                    # For numbers, use NUMBER color
-                    color = token_to_color.get('NUMBER')
-                    pixels[adj_x, adj_y] = (color[0], color[1], color[2] | 1)
-                else:
-                    # Use the token value directly as key
-                    color = token_to_color.get(token_value)
-                    if color:
-                        pixels[adj_x, adj_y] = (color[0], color[1], color[2] | 1)
+    # Set backbone pixels (curve pixels with odd LSB in blue)
+    for bx, by in backbone_points:
+        r, g, b = pixels[bx, by]
+        pixels[bx, by] = (r, g, b | 1)  # Set odd LSB in blue
+
+    # Place tokens adjacent to backbone points (below the backbone)
+    for i, (token_type, token_value) in enumerate(tokens):
+        if i >= len(backbone_points):
+            break
+
+        # Get backbone position
+        bx, by = backbone_points[i]
+
+        # Place token below the backbone
+        tx, ty = bx, by + 1
+
+        # Get the base color for this token
+        color_key = (token_type, token_value)
+        if color_key not in token_to_color:
+            # For literal tokens, use the base type
+            if token_type in [TokenType.IDENTIFIER, TokenType.NUMBER, TokenType.STRING]:
+                color_key = (token_type, f"{token_type.split('_')[0]}_BASE")
+            else:
+                continue
+
+        base_color = token_to_color[color_key]
+
+        # Set the token pixel
+        pixels[tx, ty] = base_color
+
+        # For literal tokens, encode the actual value in subsequent pixels (to the right)
+        if token_type in [TokenType.IDENTIFIER, TokenType.NUMBER, TokenType.STRING]:
+            literal_colors = []
+            if token_type == TokenType.IDENTIFIER:
+                literal_colors = encode_identifier(token_value)
+            elif token_type == TokenType.NUMBER:
+                literal_colors = encode_number(token_value)
+            elif token_type == TokenType.STRING:
+                literal_colors = encode_string(token_value)
+
+            # Place literal encoding pixels to the right of the token
+            literal_x, literal_y = tx + 1, ty
+            for r, g, b in literal_colors:
+                if literal_x >= width:
+                    break
+                # For literal pixels, set green channel to 1 to mark as literal data
+                pixels[literal_x, literal_y] = (r, 1, b)
+                literal_x += 1
 
     return img
 

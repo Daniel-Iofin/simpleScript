@@ -1,0 +1,50 @@
+# SimpleScript
+
+**SimpleScript** is a simple programming language implemented in Python. It allows you to write programs with its own syntax, which are then executed by a Python-based interpreter.
+
+## How It Works
+
+1. **Source Code**
+   Programs are written in `.ss` files using SimpleScript's syntax.
+
+2. **Parsing**
+   The Python-based parser reads your source code, checks for syntax errors, and converts it into an internal representation (like tokens or an abstract syntax tree).
+
+3. **Execution**
+   The interpreter executes the program by walking the internal representation and performing the defined operations.
+
+4. **Variables & Values**
+   Variables store data. Types are handled dynamically, and the interpreter maps variable names to values.
+
+5. **Control Flow**
+   SimpleScript supports conditionals (`if`/`else`), loops (`for`, `while`), and function calls.
+
+6. **Error Handling**
+   Syntax and runtime errors are caught by the interpreter, which provides informative error messages.
+
+## Getting Started
+
+1. Install Python (if not already installed).
+2. Clone this repository.
+3. Run a SimpleScript program:
+
+   ```bash
+   python mylanguage.py program.ss
+   ```
+
+
+## Repository Structure
+
+- **`main.py`**: Main entry point that supports both text-based `.ss` files and image files with embedded SimpleScript code
+- **`lexer.py`**: Text-based lexer that tokenizes SimpleScript source code into tokens
+- **`image_lexer.py`**: Image-based lexer that extracts and tokenizes SimpleScript code embedded in image pixels using color encoding
+- **`parser.py`**: Parser that converts tokens into an Abstract Syntax Tree (AST)
+- **`interpreter.py`**: Interpreter that executes the parsed AST and handles runtime operations
+- **`ast_nodes.py`**: Defines the node classes for the Abstract Syntax Tree structure
+- **`ss_interpreter.py`**: Shebang interpreter allowing `.ss` files to be executed directly as scripts
+- **`examples/`**: Directory containing example SimpleScript programs demonstrating various language features
+- **`create_test_image.py`**: Utility script for creating test images with embedded SimpleScript code
+- **`debug_image.py`**: Debugging utilities for image processing and tokenization
+- **`test_program.ss`**: Sample SimpleScript program for testing
+- **`test_script.png`**: Test image file containing embedded SimpleScript code
+- **`__pycache__/`**: Python bytecode cache directory (auto-generated)
