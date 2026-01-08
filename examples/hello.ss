@@ -1,5 +1,5 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/programmingLanguage/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 // Hello World example
 print("Hello, World!");
-let name = "SimpleScript";
+let name = "Picasso";
 print("Welcome to " + name + "!");

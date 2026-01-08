@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/simpleScript/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 // Arrays example
 let numbers = [1, 2, 3, 4, 5];
 print("Original array: " + str(numbers));

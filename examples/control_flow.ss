@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/programmingLanguage/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 // Control flow example with if/else and while loops
 let x = 10;
 

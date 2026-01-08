@@ -171,7 +171,7 @@ def encode_string_as_colors(s):
     return colors
 
 def create_test_image():
-    """Create a test image with embedded SimpleScript code"""
+    """Create a test image with embedded Picasso code"""
     width, height = 1200, 400  # Wider image to fit all tokens
 
     # Create a white image
