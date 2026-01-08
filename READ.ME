@@ -5,7 +5,7 @@
 ## How It Works
 
 1. **Source Code**
-   Programs are written in `.ss` files using Picasso's syntax.
+   Programs are written in `.picasso` files using Picasso's syntax.
 
 2. **Lexing**
    The lexer reads your source code (or extracts it from image pixels) and converts it into tokens.
@@ -29,7 +29,7 @@
 
 ```
 ┌─────────────────┐
-│  Source Code    │  (.ss text file or image with embedded code)
+│  Source Code    │  (.picasso text file or image with embedded code)
 │  or Image       │
 └────────┬────────┘
          │
@@ -69,7 +69,7 @@
 3. Run a Picasso program:
 
    ```bash
-   python main.py examples/hello.ss
+   python main.py examples/hello.picasso
    ```
 
    Or run an image file with embedded Picasso code:
@@ -80,16 +80,16 @@
 
 ## Repository Structure
 
-- **`main.py`**: Main entry point that supports both text-based `.ss` files and image files with embedded Picasso code
+- **`main.py`**: Main entry point that supports both text-based `.picasso` files and image files with embedded Picasso code
 - **`lexer.py`**: Text-based lexer that tokenizes Picasso source code into tokens
 - **`image_lexer.py`**: Image-based lexer that extracts and tokenizes Picasso code embedded in image pixels using color encoding
 - **`parser.py`**: Parser that converts tokens into an Abstract Syntax Tree (AST)
 - **`interpreter.py`**: Interpreter that executes the parsed AST and handles runtime operations
 - **`ast_nodes.py`**: Defines the node classes for the Abstract Syntax Tree structure
-- **`ss_interpreter.py`**: Shebang interpreter allowing `.ss` files to be executed directly as scripts
+- **`ss_interpreter.py`**: Shebang interpreter allowing `.picasso` files to be executed directly as scripts
 - **`examples/`**: Directory containing example Picasso programs demonstrating various language features
 - **`create_test_image.py`**: Utility script for creating test images with embedded Picasso code
 - **`debug_image.py`**: Debugging utilities for image processing and tokenization
-- **`test_program.ss`**: Sample Picasso program for testing
+- **`test_program.picasso`**: Sample Picasso program for testing
 - **`test_script.png`**: Test image file containing embedded Picasso code
 - **`__pycache__/`**: Python bytecode cache directory (auto-generated)

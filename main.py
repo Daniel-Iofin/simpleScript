@@ -82,8 +82,8 @@ def run_tokens(tokens, filename="<string>"):
 def main():
     if len(sys.argv) < 2:
         print("Usage: python main.py <filename>")
-        print("Example: python main.py examples/hello.ss")
-        print("Supports .ss text files and .png/.jpg/.jpeg image files with embedded Picasso")
+        print("Example: python main.py examples/hello.picasso")
+        print("Supports .picasso text files and .png/.jpg/.jpeg image files with embedded Picasso")
         sys.exit(1)
 
     filename = sys.argv[1]
