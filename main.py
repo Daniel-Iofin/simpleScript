@@ -83,7 +83,7 @@ def main():
     if len(sys.argv) < 2:
         print("Usage: python main.py <filename>")
         print("Example: python main.py examples/hello.ss")
-        print("Supports .ss text files and .png/.jpg/.jpeg image files with embedded SimpleScript")
+        print("Supports .ss text files and .png/.jpg/.jpeg image files with embedded Picasso")
         sys.exit(1)
 
     filename = sys.argv[1]

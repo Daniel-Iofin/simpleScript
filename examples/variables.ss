@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/programmingLanguage/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 // Variable declarations and arithmetic
 let x = 42;
 let y = 10;

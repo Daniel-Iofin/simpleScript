@@ -1,6 +1,6 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/simpleScript/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 
-print("=== SimpleScript Advanced Features Demo ===\n");
+print("=== Picasso Advanced Features Demo ===\n");
 
 // 1. Arrays
 print("1. Arrays:");
@@ -71,12 +71,12 @@ print("ceil(3.1): " + str(ceil(3.1)));
 print("round(3.14159, 2): " + str(round(3.14159, 2)));
 
 // String functions
-let message = "Hello, SimpleScript World!";
+let message = "Hello, Picasso World!";
 print("Original: " + message);
 print("tolower: " + tolower(message));
 print("toupper: " + toupper(message));
 print("substring(7, 18): " + substring(message, 7, 18));
-print("replace('SimpleScript', 'AwesomeScript'): " + replace(message, "SimpleScript", "AwesomeScript"));
+print("replace('Picasso', 'AwesomeScript'): " + replace(message, "Picasso", "AwesomeScript"));
 print("startswith('Hello'): " + str(startswith(message, "Hello")));
 print("endswith('!'): " + str(endswith(message, "!")));
 

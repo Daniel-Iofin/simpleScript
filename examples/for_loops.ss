@@ -1,4 +1,4 @@
-#!/usr/bin/env python3 /Users/danieliofin/Documents/GitHub/simpleScript/ss_interpreter.py
+#!/usr/bin/env python3 ss_interpreter.py
 // For loops and break/continue example
 
 // Basic for loop
